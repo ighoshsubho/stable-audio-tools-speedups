@@ -11,6 +11,10 @@ from packaging import version
 
 from .utils import compile
 
+from sageattention import sageattn
+
+F.scaled_dot_product_attention = sageattn
+
 class ResidualBlock(nn.Module):
     def __init__(self, main, skip=None):
         super().__init__()

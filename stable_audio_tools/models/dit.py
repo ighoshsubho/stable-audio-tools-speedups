@@ -321,8 +321,15 @@ class DiffusionTransformer(nn.Module):
         elif self.diffusion_objective in ["rectified_flow", "rf_denoiser"]:
             sigma = t
 
-        if cfg_scale != 1.0 and (cross_attn_cond is not None or prepend_cond is not None) and (cfg_interval[0] <= sigma[0] <= cfg_interval[1]):
+        # if cfg_scale != 1.0 and (cross_attn_cond is not None or prepend_cond is not None) and (cfg_interval[0] <= sigma[0] <= cfg_interval[1]):
+        cfg_active = torch.tensor(cfg_scale != 1.0, device=sigma.device, dtype=torch.bool)
+        has_cond = torch.tensor(cross_attn_cond is not None or prepend_cond is not None, device=sigma.device, dtype=torch.bool)
+        sigma_val = sigma[0] if sigma.ndim > 0 else sigma
+        in_interval = torch.logical_and(cfg_interval[0] <= sigma_val, sigma_val <= cfg_interval[1])
+        should_apply_cfg = torch.logical_and(torch.logical_and(cfg_active, has_cond), in_interval)
 
+
+        if should_apply_cfg.item():
             # Classifier-free guidance
             # Concatenate conditioned and unconditioned inputs on the batch dimension            
             batch_inputs = torch.cat([x, x], dim=0)

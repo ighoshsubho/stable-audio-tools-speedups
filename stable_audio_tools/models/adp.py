@@ -16,6 +16,10 @@ from torch import Tensor, einsum
 from torch.backends.cuda import sdp_kernel
 from torch.nn import functional as F
 
+from sageattention import sageattn
+
+F.scaled_dot_product_attention = sageattn
+
 """
 Utils
 """

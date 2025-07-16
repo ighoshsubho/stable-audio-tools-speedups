@@ -9,6 +9,10 @@ from torch.amp import autocast
 from typing import Callable, Literal
 from torch.nn.attention.flex_attention import flex_attention
 
+from sageattention import sageattn
+
+F.scaled_dot_product_attention = sageattn
+
 try:
     from flash_attn import flash_attn_func
 except ImportError as e:
