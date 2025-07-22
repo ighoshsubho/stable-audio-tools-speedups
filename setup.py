@@ -8,13 +8,13 @@ setup(
     description='Training and inference tools for generative audio models from Stability AI',
     packages=find_packages(),  
     install_requires=[
+        "setuptools<66.0.0"
         'alias-free-torch==0.0.6',
         'auraloss==0.4.0',
         'descript-audio-codec==1.0.0',
         'einops',
         'einops-exts',
         'ema-pytorch==0.2.3',
-        'encodec==0.1.1',
         'gradio>=5.20.0',
         'huggingface_hub',
         'importlib-resources==5.12.0',
